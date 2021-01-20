@@ -378,7 +378,7 @@ local function chopTree()
 	tryBackwards()
 
 	for n=1,16 do
-		if turtle.getItemCount(n) then
+		if turtle.getItemCount(n) > 0 then
 			local item = turtle.getItemDetail(n).name
 
 			if string.find(item, "sapling") then
