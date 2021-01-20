@@ -298,59 +298,17 @@ end
 
 print( "Chopping..." )
 
+local function plantSapling()
+	for n=1,16 do
+		if turtle.getItemCount(n) > 0 then
+			local item = turtle.getItemDetail(n).name
 
-
-local alternate = 0
-local done = true
-while not done do
-	for n=1,size do
-		for m=1,size-1 do
-			if not tryForwards() then
-				done = true
+			if string.find(item, "sapling") then
+				turtle.select(n)
+				turtle.place()
 				break
 			end
 		end
-		if done then
-			break
-		end
-		if n<size then
-			if math.fmod(n + alternate,2) == 0 then
-				turnLeft()
-				if not tryForwards() then
-					done = true
-					break
-				end
-				turnLeft()
-			else
-				turnRight()
-				if not tryForwards() then
-					done = true
-					break
-				end
-				turnRight()
-			end
-		end
-	end
-	if done then
-		break
-	end
-	
-	if size > 1 then
-		if math.fmod(size,2) == 0 then
-			turnRight()
-		else
-			if alternate == 0 then
-				turnLeft()
-			else
-				turnRight()
-			end
-			alternate = 1 - alternate
-		end
-	end
-	
-	if not tryDown() then
-		done = true
-		break
 	end
 end
 
@@ -377,17 +335,7 @@ local function chopTree()
 
 	tryBackwards()
 
-	for n=1,16 do
-		if turtle.getItemCount(n) > 0 then
-			local item = turtle.getItemDetail(n).name
-
-			if string.find(item, "sapling") then
-				turtle.select(n)
-				turtle.place()
-				break
-			end
-		end
-	end			
+	plantSapling()			
 end
 
 local function chopTrees()
@@ -398,6 +346,10 @@ local function chopTrees()
 			turnRight()
 		end
 		local suc, block = turtle.inspect()
+		
+		if not suc then
+			plantSapling()
+		end
 
 		if block.name == 'minecraft:birch_log' then
 			chopTree()
