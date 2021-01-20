@@ -372,7 +372,7 @@ local function chopTree()
 	end
 
 	for j=1,i do
-		tryDown()
+		turtle.down()
 	end
 
 	tryBackwards()
