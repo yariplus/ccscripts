@@ -354,9 +354,7 @@ local function chopTree()
 		turtle.down()
 	end
 
-	if not turtle.back() then
-		break
-	end
+	turtle.back() -- add error check
 
 	for n=1,16 do
 		if turtle.getItemCount(n) then
