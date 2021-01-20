@@ -92,7 +92,7 @@ function refuel( ammount )
 	if fuelLevel == "unlimited" then
 		return true
 	end
-	
+
 	local needed = amount or (xPos + zPos + depth + 2)
 	if turtle.getFuelLevel() < needed then
 		local fueled = false
@@ -353,11 +353,22 @@ local function chopTree()
 	for j=1,i do
 		turtle.down()
 	end
-	turnLeft()
-	turnLeft()
-	tryForwards()
-	turnLeft()
-	turnLeft() -- plant a tree here
+
+	if not turtle.back() then
+		break
+	end
+
+	for n=1,16 do
+		if turtle.getItemCount(n) then
+			local item = turtle.getItemDetail(n).name
+
+			if string.find(item, "sapling") then
+				turtle.select(n)
+				turtle.place()
+				break
+			end
+		end
+	end			
 end
 
 local function chopTrees()
