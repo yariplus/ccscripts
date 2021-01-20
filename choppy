@@ -146,6 +146,27 @@ local function tryForwards()
 	return true
 end
 
+local function tryBackwards()
+	if not refuel() then
+		print( "Not enough Fuel" )
+		returnSupplies()
+	end
+
+	if turtle.back() then
+		xPos = xPos - xDir
+		zPos = zPos - zDir
+		return true
+	else
+		turnRight()
+		turnRight()
+		tryForward()
+		turnRight()
+		turnRight()
+	end
+
+	return true
+end
+
 local function tryDown()
 	if not refuel() then
 		print( "Not enough Fuel" )
@@ -334,7 +355,7 @@ while not done do
 end
 
 local function chopTree()
-	turtle.dig()
+	-- tree in front of us, go forward and chop up.
 	tryForwards()
 
 	local i = 0
@@ -351,10 +372,10 @@ local function chopTree()
 	end
 
 	for j=1,i do
-		turtle.down()
+		tryDown()
 	end
 
-	turtle.back() -- add error check
+	tryBackwards()
 
 	for n=1,16 do
 		if turtle.getItemCount(n) then
