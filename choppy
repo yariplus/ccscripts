@@ -1,10 +1,9 @@
 local tArgs = { ... }
 if #tArgs ~= 1 then
-	print( "Usage: choppy <length>" )
+	print( "Usage: choppy <trees>" )
 	return
 end
 
--- Mine in a quarry pattern until we hit something we can't dig
 local size = tonumber( tArgs[1] )
 if size < 1 then
 	print( "Chop diameter must be positive" )
@@ -58,7 +57,7 @@ local function returnSupplies()
 		unload( true )	
 	end
 	
-	print( "Resuming mining..." )
+	print( "Resuming chopping..." )
 	goTo( x,y,z,xd,zd )
 end
 
@@ -76,7 +75,7 @@ local function collect()
 	if nTotalItems > collected then
 		collected = nTotalItems
 		if math.fmod(collected + unloaded, 50) == 0 then
-			print( "Mined "..(collected + unloaded).." items." )
+			print( "Chopped "..(collected + unloaded).." items." )
 		end
 	end
 	
@@ -342,6 +341,7 @@ local function chopTrees()
 	for t=1,size do
 		if t ~= 1 then
 			turnLeft()
+			tryForwards()
 			tryForwards()
 			turnRight()
 		end
