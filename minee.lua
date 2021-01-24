@@ -1,6 +1,6 @@
 local tArgs = { ... }
 if #tArgs ~= 1 then
-	print( "Usage: excavate <diameter>" )
+	print( "Usage: excavate <diameter> <start>" )
 	return
 end
 
@@ -10,7 +10,14 @@ if size < 1 then
 	print( "Excavate diameter must be positive" )
 	return
 end
-	
+
+local start = nil
+if size > 1 then
+	start = tArgs[2]
+end
+
+
+
 local depth = 0
 local unloaded = 0
 local collected = 0
@@ -283,6 +290,13 @@ if turtle.digDown() then
 	reseal = true
 end
 
+for d=1,start do
+	if not tryDown() then
+		done = true
+		break
+	end
+end
+
 local alternate = 0
 local done = false
 while not done do
@@ -330,7 +344,7 @@ while not done do
 			alternate = 1 - alternate
 		end
 	end
-	
+
 	if not tryDown() then
 		done = true
 		break
