@@ -1,8 +1,4 @@
 local tArgs = { ... }
-if #tArgs ~= 1 then
-	print( "Usage: excavate <diameter> <start>" )
-	return
-end
 
 -- Mine in a quarry pattern until we hit something we can't dig
 local size = tonumber( tArgs[1] )
@@ -284,6 +280,8 @@ end
 
 print( "Excavating..." )
 
+local done = false
+
 local reseal = false
 turtle.select(1)
 if turtle.digDown() then
@@ -296,9 +294,12 @@ for d=1,start do
 		break
 	end
 end
+if not tryDown() then
+	done = true
+	break
+end
 
 local alternate = 0
-local done = false
 while not done do
 	for n=1,size do
 		for m=1,size-1 do
@@ -326,6 +327,8 @@ while not done do
 				end
 				turnRight()
 			end
+			turtle.digUp()
+			turtle.digDown()
 		end
 	end
 	if done then
@@ -345,6 +348,14 @@ while not done do
 		end
 	end
 
+	if not tryDown() then
+		done = true
+		break
+	end
+	if not tryDown() then
+		done = true
+		break
+	end
 	if not tryDown() then
 		done = true
 		break
